@@ -11,7 +11,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from tiny_worktree import new_worktree, list_worktrees, remove_worktree
+from tiny_worktree import list_worktrees, new_worktree, remove_worktree
 
 
 def sh(args, cwd=None):

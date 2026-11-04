@@ -90,6 +90,22 @@ def test_readme_examples_run():
         # first -- exactly what a real reader would have to do.
         git("branch", release)
 
+        # The example also creates a branch from base="main". A freshly
+        # initialised repo does not necessarily have a branch called
+        # "main" -- git picks the default branch name from its own
+        # configuration, and the CI runners do not all agree. Create
+        # "main" explicitly so the example resolves the same way
+        # everywhere.
+        default_branch = subprocess.run(
+            ["git", "symbolic-ref", "--short", "HEAD"],
+            cwd=tmp,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+        ).stdout.strip()
+        if default_branch != "main":
+            git("branch", "main")
+
         usage = usage_block.replace("feat/issue-42", unique)
         usage = usage.replace("release/2.0", release)
 
