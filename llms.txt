@@ -1,0 +1,61 @@
+# tiny-worktree
+
+> Zero-dependency git worktree management for parallel AI agents. One branch, one checkout, one command.
+
+Zero runtime dependencies. Requires Python 3.8+ and git on PATH.
+
+## Install
+
+    pip install git+https://github.com/hussain-alsaibai/tiny-worktree.git
+
+Not on PyPI: the name "tiny-worktree" belongs to another project.
+
+## Python API
+
+    from tiny_worktree import (
+        new_worktree, list_worktrees, remove_worktree, worktree_path,
+    )
+
+    wt = new_worktree("feat/issue-42")   # -> <repo>-worktrees/feat-issue-42
+    wt.path, wt.branch, wt.head
+    list_worktrees()                      # every worktree, main one included
+    remove_worktree(wt)                   # refuses to lose uncommitted work
+    worktree_path(repo, "feat/issue-42")  # the path a branch would get
+
+Classes: Worktree (path, branch, head, detached, locked, prunable, name,
+exists(), to_dict()), WorktreeError.
+
+Functions: new_worktree, list_worktrees, remove_worktree, worktree_path,
+prune_worktrees.
+
+## CLI
+
+    tiny-worktree new <branch>          create; prints the path
+    tiny-worktree new <branch> --base <ref>
+    tiny-worktree list                   name + path for every worktree
+    tiny-worktree path <branch>          print the path it would get
+    tiny-worktree rm <branch>            remove it
+    tiny-worktree exec <branch> <cmd>    run a command inside it
+    tiny-worktree prune                  clean up stale admin entries
+
+Add --json to new, list or prune for machine-readable output.
+
+## Guarantees
+
+- Paths are deterministic: same repo + same branch -> same path, always.
+- Branch names are sanitized; a branch can never resolve outside the
+  worktrees directory.
+- remove_worktree refuses to discard uncommitted changes without force=True.
+- prune_worktrees(dry_run=True) passes git's -n and really does not change
+  anything.
+- Every failure raises WorktreeError with git's own message attached.
+
+## Tests
+
+38 tests. The suite runs against real throwaway git repositories, not mocks.
+Passes on Python 3.8, 3.9, 3.10, 3.11 and 3.12.
+
+## Links
+
+- Source: https://github.com/hussain-alsaibai/tiny-worktree
+- License: MIT

@@ -1,0 +1,52 @@
+[project]
+name = "tiny-worktree"
+version = "0.1.0"
+description = "Zero-dependency git worktree management for parallel AI agents. One branch, one checkout, one command."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Hussain Al-Saibai", email = "hussain.alsaibai@gmail.com" }]
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Version Control :: Git",
+]
+keywords = [
+    "git",
+    "worktree",
+    "git-worktree",
+    "agents",
+    "parallel",
+    "ai-agents",
+    "zero-dependency",
+    "stdlib",
+    "developer-tools",
+]
+
+[project.urls]
+Homepage = "https://github.com/hussain-alsaibai/tiny-worktree"
+Repository = "https://github.com/hussain-alsaibai/tiny-worktree"
+Issues = "https://github.com/hussain-alsaibai/tiny-worktree/issues"
+
+[project.scripts]
+tiny-worktree = "tiny_worktree.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# This is a PACKAGE (a directory with __init__.py), not a flat module.
+# Setting py-modules = ["tiny_worktree"] tells setuptools to look for a
+# file named tiny_worktree.py, which does not exist -- so the build
+# succeeds and the wheel ships nothing but dist-info. That is the exact
+# failure mode this repo's CI build job asserts against.
+packages = ["tiny_worktree"]
