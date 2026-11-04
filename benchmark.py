@@ -19,9 +19,8 @@ def sh(args, cwd=None):
         ["git"] + args,
         cwd=cwd,
         check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        universal_newlines=True,
+        capture_output=True,
+        text=True,
     )
 
 

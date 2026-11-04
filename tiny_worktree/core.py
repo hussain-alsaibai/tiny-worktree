@@ -41,12 +41,11 @@ def _run_git(args, cwd=None, check=True):
         proc = subprocess.run(
             ["git"] + list(args),
             cwd=cwd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            universal_newlines=True,
+            capture_output=True,
+            text=True,
         )
     except OSError as exc:
-        raise WorktreeError("could not run git: %s" % exc)
+        raise WorktreeError("could not run git: %s" % exc) from exc
 
     if check and proc.returncode != 0:
         raise WorktreeError(
@@ -93,7 +92,7 @@ def worktree_path(repo, branch, root=None, template=None):
     )
 
 
-class Worktree(object):
+class Worktree:
     """One worktree: a branch checked out at its own path."""
 
     __slots__ = ("path", "branch", "head", "detached", "locked", "prunable")

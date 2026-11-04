@@ -67,9 +67,8 @@ def test_readme_examples_run():
                 ["git"] + list(args),
                 cwd=tmp,
                 check=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                universal_newlines=True,
+                capture_output=True,
+                text=True,
             )
 
         git("init", "-q")
@@ -99,9 +98,8 @@ def test_readme_examples_run():
         default_branch = subprocess.run(
             ["git", "symbolic-ref", "--short", "HEAD"],
             cwd=tmp,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            universal_newlines=True,
+            capture_output=True,
+            text=True,
         ).stdout.strip()
         if default_branch != "main":
             git("branch", "main")
@@ -119,9 +117,8 @@ def test_readme_examples_run():
         proc = subprocess.run(
             [sys.executable, "-c", script],
             cwd=tmp,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            universal_newlines=True,
+            capture_output=True,
+            text=True,
             env=dict(os.environ, PYTHONPATH=REPO),
         )
         assert proc.returncode == 0, proc.stderr

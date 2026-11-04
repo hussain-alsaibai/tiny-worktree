@@ -15,6 +15,7 @@ import pytest
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PYPROJECT = os.path.join(REPO, "pyproject.toml")
+_IMPORT_VERSION_SCRIPT = "import tiny_worktree; print(tiny_worktree.__version__)"
 
 
 def test_pyproject_declares_a_package_not_a_flat_module():
@@ -41,11 +42,10 @@ def test_pyproject_declares_a_package_not_a_flat_module():
 
 def test_package_is_importable_from_a_checkout():
     proc = subprocess.run(
-        [sys.executable, "-c", "import tiny_worktree; print(tiny_worktree.__version__)"],
+        [sys.executable, "-c", _IMPORT_VERSION_SCRIPT],
         cwd=REPO,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        universal_newlines=True,
+        capture_output=True,
+        text=True,
     )
     assert proc.returncode == 0, proc.stderr
     assert proc.stdout.strip()
@@ -63,9 +63,8 @@ def test_wheel_contains_the_module():
     proc = subprocess.run(
         [sys.executable, "-m", "build", "--wheel", "--outdir", "dist"],
         cwd=REPO,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        universal_newlines=True,
+        capture_output=True,
+        text=True,
     )
     if proc.returncode != 0:
         # The build backend may not be installable on every interpreter

@@ -50,3 +50,12 @@ build-backend = "setuptools.build_meta"
 # succeeds and the wheel ships nothing but dist-info. That is the exact
 # failure mode this repo's CI build job asserts against.
 packages = ["tiny_worktree"]
+
+[tool.ruff.lint]
+# Pin the rule set explicitly. Ruff widened its default rule set in 0.17,
+# so an unpinned 'ruff check .' starts failing on style preferences
+# (UP031 percent-format, and 60-odd others) that have nothing to do with
+# correctness. Selecting explicitly makes the lint job mean the same
+# thing on every ruff release.
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["UP031", "UP032"]

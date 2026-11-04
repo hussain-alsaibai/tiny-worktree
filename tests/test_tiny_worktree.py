@@ -29,9 +29,8 @@ def git(repo, *args):
         ["git"] + list(args),
         cwd=str(repo),
         check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        universal_newlines=True,
+        capture_output=True,
+        text=True,
     )
 
 
@@ -116,7 +115,7 @@ def test_new_worktree_creates_branch(repo):
         ["git", "branch", "--list", "feature"],
         cwd=str(repo),
         stdout=subprocess.PIPE,
-        universal_newlines=True,
+        text=True,
     ).stdout
     assert "feature" in out
 
@@ -202,7 +201,7 @@ def test_remove_keeps_branch(repo):
         ["git", "branch", "--list", "feature"],
         cwd=str(repo),
         stdout=subprocess.PIPE,
-        universal_newlines=True,
+        text=True,
     ).stdout
     assert "feature" in out
 
